@@ -1,0 +1,56 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>d4445937-f4a3-4b30-99f7-418162727c76</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>AAA.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>AAA</Name>
+    <RootNamespace>AAA</RootNamespace>
+    <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AAA.py" />
+    <Compile Include="Agents\Advanced.py" />
+    <Compile Include="Agents\Basic.py" />
+    <Compile Include="SkillGraph\SkillGraph.py" />
+    <Compile Include="Skills\Apps.py" />
+    <Compile Include="Skills\Date.py" />
+    <Compile Include="Skills\Research.py" />
+    <Compile Include="Skills\Time.py" />
+    <Compile Include="Skills\Weather.py" />
+    <Compile Include="Utils\Names.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Agents\" />
+    <Folder Include="Utils\" />
+    <Folder Include="SkillGraph\" />
+    <Folder Include="Skills\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".env" />
+    <Content Include=".env.temp" />
+    <Content Include="requirements.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

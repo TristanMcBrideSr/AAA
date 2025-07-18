@@ -1,0 +1,11 @@
+python-dotenv
+requests
+python-dateutil
+openai
+google-genai
+tiktoken
+SkillsManager
+SynLrn
+SynMem
+BitSig
+MediaCapture

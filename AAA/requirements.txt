@@ -4,7 +4,7 @@ python-dateutil
 openai
 google-genai
 tiktoken
-SkillsManager
+SkillLink
 SynLrn
 SynMem
 BitSig

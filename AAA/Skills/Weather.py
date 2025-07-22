@@ -13,7 +13,7 @@ import threading
 import inspect
 from datetime import datetime
 
-from SkillsManager import SkillsManager
+from SkillLink import SkillLink
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ class Weather:
         self.initialized = True
 
     def _initComponents(self):
-        self.skillsManager = SkillsManager()
+        self.skillLink = SkillLink()
         ##------------- When defining signatures, you can choose between dictSig or listSig -------------##
         # dictSig is more descriptive and allows you to specify types for function arguments
         # listSig is simpler and just specifies argument names without types
@@ -69,9 +69,9 @@ class Weather:
         }
 
     def weatherSkill(self, action: str, *args):
-        self.skillsManager.argParser.printArgs(self, locals())
+        self.skillLink.argParser.printArgs(self, locals())
         name = inspect.currentframe().f_code.co_name
-        return self.skillsManager.executeSkill('system', name, self.actionMap, action, *args)
+        return self.skillLink.executeSkill('system', name, self.actionMap, action, *args)
 
     def _getWeather(self, infoDict: dict) -> str:
         latitude = infoDict.get("latitude")
@@ -187,7 +187,7 @@ class Weather:
 # import threading
 # import inspect
 
-# from SkillsManager import SkillsManager
+# from SkillLink import SkillLink
 
 # logger = logging.getLogger(__name__)
 
@@ -210,7 +210,7 @@ class Weather:
 #         self.initialized = True
 
 #     def _initComponents(self):
-#         self.skillsManager = SkillsManager()
+#         self.skillLink = SkillLink()
 #         self.actionMap = {
 #             "get-weather":     self._getWeather,
 #             "get-temperature": self._getTemperature,
@@ -225,9 +225,9 @@ class Weather:
 #         }
 
 #     def weatherSkill(self, action: str, *args):
-#         self.skillsManager.argParser.printArgs(self, locals())
+#         self.skillLink.argParser.printArgs(self, locals())
 #         name = inspect.currentframe().f_code.co_name
-#         return self.skillsManager.executeSkill('system', name, self.actionMap, action, *args)
+#         return self.skillLink.executeSkill('system', name, self.actionMap, action, *args)
 
 #     def _getWeather(self, latitude: float, longitude: float) -> str:
 #         """

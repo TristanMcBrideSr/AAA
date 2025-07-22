@@ -8,7 +8,7 @@ import logging
 from dotenv import load_dotenv
 from pathlib import Path
 
-from SkillsManager import SkillsManager # Dont for get to pip install SkillsManager
+from SkillLink import SkillLink # Dont for get to pip install SkillLink
 
 load_dotenv()
 
@@ -33,7 +33,7 @@ class SkillGraph:
         self.initialized = True
 
     def _initComponents(self):
-        self.skillsManager    = SkillsManager()
+        self.skillLink        = SkillLink()
         self.showCapabilities = os.getenv('SHOW_CAPABILITIES', 'False') == 'True'
         self.showMetaData     = os.getenv('SHOW_METADATA', 'False') == 'True'
         self.loadAllComponents()
@@ -43,7 +43,7 @@ class SkillGraph:
             self.getMetaData()
 
     def getDir(self, *paths):
-        return self.skillsManager.getDir(*paths)
+        return self.skillLink.getDir(*paths)
 
     def loadAllComponents(self):
         """
@@ -53,7 +53,7 @@ class SkillGraph:
         self.agentSkills = []
         self.agentTools = []
 
-        self.skillsManager.loadComponents(
+        self.skillLink.loadComponents(
             paths=[
                 ['Skills'],
             ],
@@ -73,14 +73,14 @@ class SkillGraph:
         skills = (
             self.agentSkills
         )
-        return self.skillsManager.getComponents(skills)
+        return self.skillLink.getComponents(skills)
 
     def reloadSkills(self):
         """
         Reload all skills and print any new skills added.
         """
         original = self.getMetaData()
-        self.skillsManager.reloadSkills()
+        self.skillLink.reloadSkills()
         new = self.getMetaData()
         for skill in new:
             if skill not in original:
@@ -91,7 +91,7 @@ class SkillGraph:
         metaData = (
                 self.agentSkills
         )
-        return self.skillsManager.getMetaData(metaData, self.showMetaData)
+        return self.skillLink.getMetaData(metaData, self.showMetaData)
 
     # ----- Skills -----
     def getAgentCapabilities(self):
@@ -103,14 +103,14 @@ class SkillGraph:
         capabitites = (
             self.agentSkills
         )
-        return self.skillsManager.getCapabilities(capabitites, self.showCapabilities, description)
+        return self.skillLink.getCapabilities(capabitites, self.showCapabilities, description)
 
     def checkActions(self, action: str) -> str:
         """
         Check if the given action is valid based on the agent's skills.
         Returns a string indicating whether the action is valid or not.
         """
-        return self.skillsManager.actionParser.checkActions(action)
+        return self.skillLink.actionParser.checkActions(action)
 
     def getActions(self, action: str) -> list:
         """
@@ -118,28 +118,28 @@ class SkillGraph:
         This method uses the skills manager's action parser to retrieve actions that match the given string.
         If the action is not found, it returns an empty list.
         """
-        return self.skillsManager.actionParser.getActions(action)
+        return self.skillLink.actionParser.getActions(action)
 
     def executeAction(self, actions, action):
         """
         Execute a single action based on the provided actions and action string.
         You must create your own for loop if you want to execute multiple actions.
         """
-        return self.skillsManager.actionParser.executeAction(actions, action)
+        return self.skillLink.actionParser.executeAction(actions, action)
 
     def executeActions(self, actions, action):
         """
         Execute both single and multiple actions based on the provided actions and action string.
         The for loop is handled internally, so you can pass a single action or a list of actions.
         """
-        return self.skillsManager.actionParser.executeActions(actions, action)
+        return self.skillLink.actionParser.executeActions(actions, action)
 
     def skillInstructions(self):
         """
         Get skill instructions for the agent based on its capabilities.
         """
         skillExamples = self.skillExamples()
-        return self.skillsManager.skillInstructions(self.getAgentCapabilities(), skillExamples)
+        return self.skillLink.skillInstructions(self.getAgentCapabilities(), skillExamples)
 
     def skillExamples(self):
         """
@@ -166,7 +166,7 @@ class SkillGraph:
         If the tool is not found, it will return an error message.
         If the tool execution fails, it will retry based on the retry parameter.
         """
-        return self.skillsManager.actionParser.executeTool(name, tools, args, threshold, retry)
+        return self.skillLink.actionParser.executeTool(name, tools, args, threshold, retry)
 
     def getTools(self):
         """
@@ -175,13 +175,13 @@ class SkillGraph:
         tools = (
             self.agentTools
         )
-        return self.skillsManager.getTools(tools)
+        return self.skillLink.getTools(tools)
 
     def extractJson(self, text):
         """
         Extract the first JSON array or object from a string, even if wrapped in markdown or extra commentary.
         """
-        return self.skillsManager.extractJson(text)
+        return self.skillLink.extractJson(text)
 
     def getJsonSchema(self, func, schemaType):
         """
@@ -190,7 +190,7 @@ class SkillGraph:
         Compatible with the OpenAI API and similar services that use JSON schemas.
         Returns a dictionary representing the schema.
         """
-        return self.skillsManager.getJsonSchema(func, schemaType)
+        return self.skillLink.getJsonSchema(func, schemaType)
 
     def getTypedSchema(self, func):
         """
@@ -198,7 +198,7 @@ class SkillGraph:
         Compatible with the Google API.
         Returns a dictionary representing the schema.
         """
-        return self.skillsManager.getTypedSchema(func)
+        return self.skillLink.getTypedSchema(func)
 
     # ----- Can be used with both skills and tools -----
     def isStructured(self, *args):
@@ -206,23 +206,23 @@ class SkillGraph:
         Check if any of the arguments is a list of dictionaries.
         This indicates structured input (multi-message format).
         """
-        return self.skillsManager.isStructured(*args)
+        return self.skillLink.isStructured(*args)
 
     def handleTypedFormat(self, role: str = "user", content: str = ""):
         """
         Format content for Google GenAI APIs.
         """
-        return self.skillsManager.handleTypedFormat(role, content)
+        return self.skillLink.handleTypedFormat(role, content)
 
     def handleJsonFormat(self, role: str = "user", content: str = ""):
         """
         Format content for OpenAI APIs and similar JSON-based APIs.
         """
-        return self.skillsManager.handleJsonFormat(role, content)
+        return self.skillLink.handleJsonFormat(role, content)
 
     def buildGoogleSafetySettings(self, harassment="BLOCK_NONE", hateSpeech="BLOCK_NONE", sexuallyExplicit="BLOCK_NONE", dangerousContent="BLOCK_NONE"):
         """
         Construct a list of Google GenAI SafetySetting objects.
         """
-        return self.skillsManager.buildGoogleSafetySettings(harassment, hateSpeech, sexuallyExplicit, dangerousContent)
+        return self.skillLink.buildGoogleSafetySettings(harassment, hateSpeech, sexuallyExplicit, dangerousContent)
 

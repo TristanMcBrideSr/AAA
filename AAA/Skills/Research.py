@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from google import genai
 from google.genai import types
-from SkillsManager import SkillsManager
+from SkillLink import SkillLink
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ class Research:
         self.initialized = True
 
     def _initComponents(self):
-        self.skillsManager = SkillsManager()
+        self.skillLink = SkillLink()
         self.provider  = os.getenv("PROVIDER", "openai")
         self.gptClient = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.genClient = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
@@ -46,9 +46,9 @@ class Research:
         Description: "Research a topic using web search capabilities."
         Additional Information: "Uses web search capabilities to gather information on a given topic based on the provided instructions."
         """
-        self.skillsManager.argParser.printArgs(self, locals())
+        self.skillLink.argParser.printArgs(self, locals())
         name = inspect.currentframe().f_code.co_name
-        return self.skillsManager.executeSkill('system', name, self.actionMap, action, *args)
+        return self.skillLink.executeSkill('system', name, self.actionMap, action, *args)
 
     def _research(self, instructions: str):
         if self.provider == "openai":
